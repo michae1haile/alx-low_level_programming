@@ -1,67 +1,48 @@
 #include "main.h"
 /**
- * _strlen - returns the length of a string
- * @s: the string whose length to check
- *
- * Return: integer length of string
- */
-int _strlen(char *s)
-{
-	int i = 0;
-
-	while (*s++)
-		i++;
-	return (i);
-}
-
-/**
- * rev_string - reverses a string
- * @s: the string to reverse
+ * infinite_add - adds values of two strings together
+ * @n1: first string of integers
+ * @n2: second string of ints
+ * @r: result string
+ * @size_r: size of result string
  *
  * Return: void
  */
-char *rev_string(char *s)
-{
-	int l = _strlen(s), i = 0;
-	char t;
-
-	for (i = 0; i < l / 2; i++)
-	{
-		t = s[l - i - 1];
-		s[l - i - 1] = s[i];
-		s[i] = t;
-	}
-	return (s);
-}
-
-/**
- * infinite_add - adds arbitrarily long string of digits
- * @n1: the first digit string
- * @n2: the second digit string
- * @r: the result buffer
- * @size_r: the size of result buffer
- *
- * Return: char pointer to buffer
- */
 char *infinite_add(char *n1, char *n2, char *r, int size_r)
 {
-	int l1 = _strlen(n1), l2 = _strlen(n2), i = 0, a, b, c = 0;
+	int len1 = 0, num1 = 0, sum1 = 0;
+	int len2 = 0, num2 = 0, sum2 = 0;
+	int num = 0, sum = 0, i, j;
+	char temp, n1c[1000], n2c[1000];
 
-	for (l1--, l2--, size_r--; l1 >= 0 || l2 >= 0 || c; l1--, l2--, i++)
+	while (n1[len1] != '\0')
+		len1++;
+	while (n2[len2] != '\0')
+		len2++;
+	if (len1 >= size_r || len2 >= size_r)
+		return (0);
+	for (j = 0, i = len1 - 1; j < len1; j++, i--)
+		n1c[j] = n1[i];
+	n1c[j] = '\0';
+	for (j = 0, i = len2 - 1; j < len2; j++, i--)
+		n2c[j] = n2[i];
+	n2c[j] = '\0';
+	while (num < size_r - 1)
 	{
-		if (i >= size_r)
-			return (0);
-		a = 0;
-		b = 0;
-		if (l1 >= 0)
-			a = n1[l1] - '0';
-		if (l2 >= 0)
-			b = n2[l2] - '0';
-		a = a + b + c;
-		c = a / 10;
-		a %= 10;
-		r[i] = a + '0';
+		if (num1 >= len1 && num2 >= len2 && sum == 0)
+			break;
+		sum1 = num1 < len1 ? n1c[num1] - '0' : 0;
+		sum2 = num2 < len2 ? n2c[num2] - '0' : 0;
+		sum += (sum1 + sum2);
+		r[num] = sum % 10 + '0';
+		sum = sum < 10 ? 0 : 1;
+		num++, num1++, num2++;
 	}
-	r[i] = '\0';
-	return (rev_string(r));
+	if (sum != 0)
+		return (0);
+	r[num] = '\0';
+	for (j = 0, i = --num; j < num / 2; j++, i--)
+		temp = r[j], r[j] = r[i], r[i] = temp;
+	return (r);
 }
+

@@ -1,33 +1,19 @@
-#include "coding.h"
-
+#include "main.h"
 /**
- * rot13 - function with 1 argument
- * @str: char type pointer argument
+ * rot13 - translates string to ROT13
+ * @s: input string to be translated
  *
- * Description: encodes rot13 with a string
- * Return: string value
+ * Return: string after conversion of ROT13
  */
-char *rot13(char *str)
+char *rot13(char *s)
 {
-	char *input, *output;
-	int count, count2;
+	int i, j;
+	char alphabet[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	char rot_it[] =   "nopqrstuvwxyzabcdefghijklmNOPQRSTUVWXYZABCDEFGHIJKLM";
 
-	input = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-	output = "NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm";
-	count = 0;
-	while (str[count] != '\0')
-	{
-		count2 = 0;
-		while (input[count2] != '\0')
-		{
-			if (str[count] == input[count2])
-			{
-				str[count] = output[count2];
-				break;
-			}
-			count2++;
-		}
-		count++;
-	}
-	return (str);
+	for (i = 0; s[i] != '\0'; i++)
+		for (j = 0; j < 52; j++)
+			if (s[i] == alphabet[j])
+				s[i] = rot_it[j], j = 52;
+	return (s);
 }
